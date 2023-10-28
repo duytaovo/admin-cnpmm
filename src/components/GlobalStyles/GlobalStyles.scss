@@ -1,0 +1,148 @@
+@import "normalize.css";
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+@font-face {
+  font-family: "Brown-pro";
+  src:
+    url("../src/assets/fonts/brownpro-bold.otf")
+      format("woff2 supports variations"),
+    url("../src/assets/fonts/brownpro-bold.otf")
+      format("woff2 supports variations");
+  font-weight: 100 900;
+}
+:root {
+  --primary-bg: #00adb5;
+  --primary-bg-btn: #3699d3;
+}
+html {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+textarea {
+  resize: both; /* or horizontal, vertical, none */
+}
+
+body {
+  // background: #00adb5 !important;
+  font-family: "Brown-pro", sans-serif !important;
+  overflow-y: scroll;
+  height: 100vh;
+  // color: #000;
+  width: 100vw;
+  /* font-family: "Open Sans", sans-serif; */
+  // font-size: 1.6rem;
+  // line-height: 1.5;
+  // background-color: #000;
+  text-rendering: optimizeSpeed;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+svg {
+  display: inline-block;
+}
+input[type="number"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.tippy-box {
+  background-color: #fff;
+  max-width: 950px !important;
+  border: 1px solid #ddd;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.tippy-arrow {
+  color: #fff;
+}
+
+.bg {
+  width: 100%;
+  background: linear-gradient(45deg, #112d4e, #222831, #393e46, #00adb5);
+}
+
+.app.dark {
+  background-color: #111;
+  color: rgb(156, 156, 156);
+
+  .chartGrid {
+    stroke: rgba(228, 228, 228, 0.219);
+  }
+
+  .table {
+    background-color: #111;
+
+    .tableCell {
+      color: gray;
+    }
+  }
+
+  .navbar {
+    color: #999;
+    border-color: #333;
+
+    .search {
+      border-color: gray;
+    }
+  }
+
+  .sidebar {
+    background-color: #111;
+    border-color: #333;
+
+    .top {
+      .logo {
+        color: #999;
+      }
+    }
+    hr {
+      border-color: #333;
+    }
+
+    ul {
+      li {
+        &:hover {
+          background-color: #333;
+        }
+
+        .icon {
+          color: #999;
+        }
+      }
+    }
+  }
+
+  .datatable {
+    .datagrid {
+      color: gray;
+      border: none;
+
+      .viewButton,
+      .deleteButton,
+      .cellWithStatus {
+        color: gray;
+        border: none;
+      }
+    }
+  }
+
+  input {
+    background-color: transparent;
+  }
+}

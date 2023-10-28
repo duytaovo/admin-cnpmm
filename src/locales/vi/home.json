@@ -1,0 +1,15 @@
+{
+  "sidebar": {
+    "dashboard": "Bảng chính",
+    "users": "Người dùng",
+    "products": "Sản phẩm",
+    "orders": "Đặt hàng",
+    "delivery": "Giao hàng",
+    "Category": "Danh mục",
+    "Brand": "Thương hiệu",
+    "status": "Trạng thái",
+    "notification": "Thông báo",
+    "profile": "Hồ sơ",
+    "logout": "Đăng xuất"
+  }
+}

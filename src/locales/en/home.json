@@ -1,0 +1,15 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "products": "Products",
+    "orders": "Orders",
+    "delivery": "Delivery",
+    "Category": "Category",
+    "Brand": "Brand",
+    "status": "Status",
+    "notification": "Notification",
+    "profile": "Profile",
+    "logout": "Logout"
+  }
+}
