@@ -97,6 +97,7 @@ const TablePurchase: React.FC = () => {
       price_before_discount: purchase[i]?.price_before_discount,
       status: purchase[i].status === 4 ? "Đã giao" : "Đang xác nhận",
       product_name: purchase[i].product?.name,
+      // description: purchase[i].product?.description,
       product_id: purchase[i].product?._id,
       rating: purchase[i].product?.rating,
       images: purchase[i].product?.images,

@@ -15,50 +15,45 @@ import path from "src/constants/path";
 import React, { useEffect, useState } from "react";
 import { Button, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import { getCategorys } from "src/store/category/categorySlice";
 
 interface DataType {
   key: React.Key;
   name: string;
-  brand: string;
-  mota: string;
-  status?: any;
-  action?: any;
-  description: string;
-  loaiSp: string;
 }
 
-const columns: ColumnsType<DataType> = [
-  { title: "Loại danh mục", dataIndex: "loaiSp", key: "loaiSp" },
+const columns: ColumnsType<any> = [
+  // { title: "Loại danh mục", dataIndex: "loaiSp", key: "loaiSp" },
   { title: "Tên danh mục", dataIndex: "name", key: "name" },
-  { title: "Tên thương hiệu", dataIndex: "brand", key: "brand" },
+  // { title: "Ngày tạo", dataIndex: "createdAt", key: "createdAt" },
+
   // { title: "Giá sản phẩm", dataIndex: "price", key: "price" },
-  { title: "Mô tả", dataIndex: "mota", key: "mota" },
   // { title: "Khuyến mãi", dataIndex: "sale", key: "sale" },
-  {
-    title: "Trạng thái",
-    dataIndex: "status",
-    key: "status",
-    render: () => {
-      // const handleChangeStatus = (e: any) => {};
-      return (
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-          <InputLabel id="demo-select-small-label">Trạng thái</InputLabel>
-          <Select
-            labelId="demo-select-small-label"
-            id="demo-select-small"
-            value={status}
-            label="Status"
-            // onChange={handleChange}
-          >
-            <MenuItem value={0}>Not verify</MenuItem>
-            <MenuItem value={1}>Verify</MenuItem>
-            <MenuItem value={2}>Disable</MenuItem>
-            <MenuItem value={3}>Enable</MenuItem>
-          </Select>
-        </FormControl>
-      );
-    },
-  },
+  // {
+  //   title: "Trạng thái",
+  //   dataIndex: "status",
+  //   key: "status",
+  //   render: () => {
+  //     // const handleChangeStatus = (e: any) => {};
+  //     return (
+  //       <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+  //         <InputLabel id="demo-select-small-label">Trạng thái</InputLabel>
+  //         <Select
+  //           labelId="demo-select-small-label"
+  //           id="demo-select-small"
+  //           value={status}
+  //           label="Status"
+  //           // onChange={handleChange}
+  //         >
+  //           <MenuItem value={0}>Not verify</MenuItem>
+  //           <MenuItem value={1}>Verify</MenuItem>
+  //           <MenuItem value={2}>Disable</MenuItem>
+  //           <MenuItem value={3}>Enable</MenuItem>
+  //         </Select>
+  //       </FormControl>
+  //     );
+  //   },
+  // },
   {
     title: "Action",
     dataIndex: "",
@@ -87,48 +82,21 @@ const columns: ColumnsType<DataType> = [
     ),
   },
 ];
-// const originData: DataType[] = [];
-// for (let i = 0; i < 100; i++) {
-//   originData.push({
-//     key: i.toString(),
-//     name: `Edward ${i}`,
-//     age: 32,
-//     address: `London Park no. ${i}`,
-//   });
-// }
-const data: DataType[] = [
-  {
-    key: 1,
-    loaiSp: "Điện thoại",
-    brand: "Apple",
-    name: "Iphone 15 Plus",
-    mota: "Iphone 15 Plus được ra mắt ....",
-    description: "Mô tả chi tiết ở đây",
-  },
-  {
-    key: 2,
-    loaiSp: "Điện thoại",
-    brand: "Apple",
-    name: "Iphone 15 Plus",
-    mota: "Iphone 15 Plus được ra mắt ....",
-    description: "Mô tả chi tiết ở đây",
-  },
-  {
-    key: 3,
-    loaiSp: "Điện thoại",
-    brand: "Apple",
-    name: "Iphone 15 Plus",
-    mota: "Iphone 15 Plus được ra mắt ....",
-    description: "Mô tả chi tiết ở đây",
-  },
-];
 
 const TableProduct: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.user);
-
+  const { category } = useAppSelector((state) => state.category);
+  const originData: any[] = [];
+  for (let i = 0; i < category.length; i++) {
+    originData.push({
+      key: i.toString(),
+      name: category[i].name,
+      createdAt: category[i].createdAt,
+      updatedAt: category[i].updatedAt,
+    });
+  }
   useEffect(() => {
-    // dispatch(getCars(""));
+    dispatch(getCategorys(""));
   }, []);
   const [status, setStatus] = React.useState<string>("");
 
@@ -184,13 +152,13 @@ const TableProduct: React.FC = () => {
       </div>
       <Table
         columns={columns}
-        expandable={{
-          expandedRowRender: (record) => (
-            <p style={{ margin: 0 }}>{record?.description}</p>
-          ),
-          rowExpandable: (record) => record?.name !== "Not Expandable",
-        }}
-        dataSource={data}
+        // expandable={{
+        //   expandedRowRender: (record) => (
+        //     <p style={{ margin: 0 }}>{record?.description}</p>
+        //   ),
+        //   rowExpandable: (record) => record?.name !== "Not Expandable",
+        // }}
+        dataSource={originData}
       />
     </div>
   );
