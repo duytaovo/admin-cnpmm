@@ -10,18 +10,9 @@ import Input from "src/components/Input";
 import path from "src/constants/path";
 import { useAppDispatch, useAppSelector } from "src/hooks/useRedux";
 import { ErrorResponse } from "src/types/utils.type";
-import { schemaProduct } from "src/utils/rules";
+import { schemaCategory, schemaProduct } from "src/utils/rules";
 import { getAvatarUrl, isAxiosUnprocessableEntityError } from "src/utils/utils";
-import SelectCustom from "src/components/Select";
 
-import Textarea from "src/components/Textarea";
-import InputFile from "src/components/InputFile";
-import {
-  addProduct,
-  getProducts,
-  uploadImageProduct,
-  uploadImagesProduct,
-} from "src/store/product/productSlice";
 import { addCategory, getCategorys } from "src/store/category/categorySlice";
 
 const normFile = (e: any) => {
@@ -32,31 +23,9 @@ const normFile = (e: any) => {
 };
 
 interface FormData {
-  images: string[];
-  price: number;
-  // rating: number;
-  price_before_discount: number;
-  quantity: number;
-  sold: number;
-  // view: number;
   name: string;
-  description: string;
-  // category: {
-  //   _id: string;
-  //   name: string;
-  // };
-  image: string;
 }
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+
 const FormDisabledDemo: React.FC = () => {
   const [componentDisabled, setComponentDisabled] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -72,9 +41,8 @@ const FormDisabledDemo: React.FC = () => {
     setValue,
     watch,
   } = useForm({
-    resolver: yupResolver(schemaProduct),
+    resolver: yupResolver(schemaCategory),
   });
-  const avatar = watch("image");
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -95,16 +63,10 @@ const FormDisabledDemo: React.FC = () => {
 
   useEffect(() => {
     setValue("name", "");
-    setValue("description", "");
-    setValue("image", "");
-    setValue("images", "");
-    setValue("price_before_discount", "");
-    setValue("quantity", "");
-    setValue("sold", "");
   }, []);
   const onSubmit = handleSubmit(async (data) => {
     console.log(data);
-    let images = [];
+
     try {
       const body = JSON.stringify({
         name: data.name,
@@ -114,7 +76,7 @@ const FormDisabledDemo: React.FC = () => {
       unwrapResult(res);
       // const d = res?.payload?.data.data;
       // if (d?.status !== 200) return toast.error(d?.message);
-      await toast.success("Thêm sản phẩm thành công ");
+      await toast.success("Thêm thành công ");
       await dispatch(getCategorys(""));
       await navigate(path.categories);
     } catch (error: any) {
@@ -141,7 +103,7 @@ const FormDisabledDemo: React.FC = () => {
   };
   return (
     <div className="bg-white shadow ">
-      <h2 className="font-bold m-4 text-2xl">Thêm sản phẩm điện thoại</h2>
+      <h2 className="font-bold m-4 text-2xl">Thêm danh mục sản phẩm</h2>
       <Form
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 14 }}

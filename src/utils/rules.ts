@@ -121,6 +121,10 @@ export const schemaProduct = yup.object({
   images: yup.string(),
 });
 
+export const schemaCategory = yup.object({
+  name: yup.string().required("Tên danh mục là bắt buộc"),
+});
+
 export type UserSchema = yup.InferType<typeof userSchema>;
 
 export type Schema = yup.InferType<typeof schema>;

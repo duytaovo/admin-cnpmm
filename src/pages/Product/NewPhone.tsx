@@ -389,31 +389,6 @@ const FormDisabledDemo: React.FC = () => {
               onChange={handleChangeFile}
               id="images"
             />
-            {/* <InputFile
-              label="Chọn ảnh mặt trước"
-              onChange={handleChangeFile}
-              id="image"
-            />
-            <InputFile
-              label="Chọn ảnh mặt trước"
-              onChange={handleChangeFile}
-              id="image"
-            />
-            <InputFile
-              label="Chọn ảnh mặt trước"
-              onChange={handleChangeFile}
-              id="image"
-            />
-            <InputFile
-              label="Chọn ảnh mặt trước"
-              onChange={handleChangeFile}
-              id="image"
-            />
-            <InputFile
-              label="Chọn ảnh mặt trước"
-              onChange={handleChangeFile}
-              id="image"
-            /> */}
             <div className="mt-3  flex flex-col items-center text-red-500">
               <div>Dụng lượng file tối đa 2 MB</div>
               <div>Định dạng:.JPEG, .PNG</div>

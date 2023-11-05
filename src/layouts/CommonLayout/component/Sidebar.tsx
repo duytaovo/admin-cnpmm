@@ -84,22 +84,22 @@ export default function Sidebar() {
               </span>
             </li>
           </Link>
-          <Link to="/brand" style={{ textDecoration: "none" }}>
+          {/* <Link to="/brand" style={{ textDecoration: "none" }}>
             <li className="flex item-center p-[5px] cursor-pointer hover:bg-[#ece8ff]">
               <LocalPoliceOutlinedIcon className="text-[18px] text-mainColor" />
               <span className="text-[13px] font-[600] text-[#888] ml-[10px]">
                 {t("sidebar.Brand")}
               </span>
             </li>
-          </Link>
-          <Link to="/delivery" style={{ textDecoration: "none" }} className="">
+          </Link> */}
+          {/* <Link to="/delivery" style={{ textDecoration: "none" }} className="">
             <li className="flex item-center p-[5px] cursor-pointer hover:bg-[#ece8ff]">
               <LocalShippingIcon className="text-[18px] text-mainColor" />
               <span className="text-[13px] font-[600] text-[#888] ml-[10px]">
                 {t("sidebar.delivery")}
               </span>
             </li>
-          </Link>
+          </Link> */}
           <Link to="/order" style={{ textDecoration: "none" }}></Link>
           <p className="text-[10px] font-bold text-[#999] mt-[15px] mb-[5px]">
             USEFUL

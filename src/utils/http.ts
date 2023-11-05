@@ -38,8 +38,10 @@ export class Http {
     });
     this.instance.interceptors.request.use(
       (config) => {
+        config.headers.authorization = this.accessToken;
         if (this.accessToken && config.headers) {
           config.headers.authorization = this.accessToken;
+
           return config;
         }
         return config;

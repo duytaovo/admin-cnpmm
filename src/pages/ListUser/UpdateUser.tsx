@@ -5,7 +5,7 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { Button, Form, Upload } from "antd";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Input from "src/components/Input";
 import path from "src/constants/path";

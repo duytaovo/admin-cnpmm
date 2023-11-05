@@ -15,77 +15,59 @@ import path from "src/constants/path";
 import React, { useEffect, useState } from "react";
 import { Button, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { getCategorys } from "src/store/category/categorySlice";
-
-interface DataType {
-  key: React.Key;
-  name: string;
-}
-
-const columns: ColumnsType<any> = [
-  // { title: "Loại danh mục", dataIndex: "loaiSp", key: "loaiSp" },
-  { title: "Tên danh mục", dataIndex: "name", key: "name" },
-  // { title: "Ngày tạo", dataIndex: "createdAt", key: "createdAt" },
-
-  // { title: "Giá sản phẩm", dataIndex: "price", key: "price" },
-  // { title: "Khuyến mãi", dataIndex: "sale", key: "sale" },
-  // {
-  //   title: "Trạng thái",
-  //   dataIndex: "status",
-  //   key: "status",
-  //   render: () => {
-  //     // const handleChangeStatus = (e: any) => {};
-  //     return (
-  //       <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-  //         <InputLabel id="demo-select-small-label">Trạng thái</InputLabel>
-  //         <Select
-  //           labelId="demo-select-small-label"
-  //           id="demo-select-small"
-  //           value={status}
-  //           label="Status"
-  //           // onChange={handleChange}
-  //         >
-  //           <MenuItem value={0}>Not verify</MenuItem>
-  //           <MenuItem value={1}>Verify</MenuItem>
-  //           <MenuItem value={2}>Disable</MenuItem>
-  //           <MenuItem value={3}>Enable</MenuItem>
-  //         </Select>
-  //       </FormControl>
-  //     );
-  //   },
-  // },
-  {
-    title: "Action",
-    dataIndex: "",
-    key: "x",
-    render: () => (
-      <Space>
-        <Link to={path.category}>
-          {" "}
-          <IconButton className="text-mainColor">
-            <EditIcon
-              className="text-mainColor"
-              sx={{
-                color: "",
-              }}
-            />
-          </IconButton>
-        </Link>
-        <Link to={path.users}>
-          <Tooltip title="Thay đổi trạng thái " className="disabled:bg-white">
-            <IconButton>
-              <DeleteIcon className="text-red-700" />
-            </IconButton>
-          </Tooltip>
-        </Link>
-      </Space>
-    ),
-  },
-];
+import { deleteCategory, getCategorys } from "src/store/category/categorySlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 const TableProduct: React.FC = () => {
   const dispatch = useAppDispatch();
   const { category } = useAppSelector((state) => state.category);
+  const columns: ColumnsType<any> = [
+    { title: "Tên danh mục", dataIndex: "name", key: "name" },
+    { title: "Ngày tạo", dataIndex: "createdAt", key: "createdAt" },
+
+    {
+      title: "Action",
+      dataIndex: "",
+      key: "x",
+      render: (params) => {
+        const { key, id } = params;
+        const handleDelete = async () => {
+          const res = await dispatch(deleteCategory([id]));
+          unwrapResult(res);
+          const d = res?.payload;
+          // if (d?.status !== 200) return toast.error(d?.message);
+          await toast.success("Xóa danh mục thành công ");
+          await dispatch(getCategorys(""));
+        };
+        return (
+          <Space>
+            <Link to={`/category/detail/${id}`}>
+              {" "}
+              <IconButton className="text-mainColor">
+                <EditIcon
+                  className="text-mainColor"
+                  sx={{
+                    color: "",
+                  }}
+                />
+              </IconButton>
+            </Link>
+            {/* <Link to={path.users}> */}
+            <Tooltip title="Thay đổi trạng thái " className="disabled:bg-white">
+              <IconButton>
+                <DeleteIcon className="text-red-700" />
+              </IconButton>
+            </Tooltip>
+            {/* </Link> */}
+          </Space>
+        );
+      },
+    },
+  ];
+  useEffect(() => {
+    dispatch(getCategorys(""));
+  }, []);
   const originData: any[] = [];
   for (let i = 0; i < category.length; i++) {
     originData.push({
@@ -95,37 +77,7 @@ const TableProduct: React.FC = () => {
       updatedAt: category[i].updatedAt,
     });
   }
-  useEffect(() => {
-    dispatch(getCategorys(""));
-  }, []);
-  const [status, setStatus] = React.useState<string>("");
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value);
-  };
-
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const start = () => {
-    setLoading(true);
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([]);
-      setLoading(false);
-    }, 1000);
-  };
-
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
-  const hasSelected = selectedRowKeys.length > 0;
   return (
     <div className="mx-6">
       <div className="w-full text-[24px] text-gray-500 mb-[10px] flex items-center justify-between">
@@ -137,29 +89,8 @@ const TableProduct: React.FC = () => {
           Thêm mới
         </Link>
       </div>
-      <div style={{ marginBottom: 16 }}>
-        <Button
-          type="primary"
-          onClick={start}
-          disabled={!hasSelected}
-          loading={loading}
-        >
-          Reload
-        </Button>
-        <span style={{ marginLeft: 8 }}>
-          {hasSelected ? `Selected ${selectedRowKeys.length} items` : ""}
-        </span>
-      </div>
-      <Table
-        columns={columns}
-        // expandable={{
-        //   expandedRowRender: (record) => (
-        //     <p style={{ margin: 0 }}>{record?.description}</p>
-        //   ),
-        //   rowExpandable: (record) => record?.name !== "Not Expandable",
-        // }}
-        dataSource={originData}
-      />
+
+      <Table columns={columns} dataSource={originData} />
     </div>
   );
 };
