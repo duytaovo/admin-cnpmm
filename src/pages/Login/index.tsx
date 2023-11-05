@@ -55,6 +55,8 @@ const Login = () => {
       await setRefreshTokenToLS(d?.data.refresh_token);
       await setIsAuthenticated(true);
       await navigate("/");
+      location.reload();
+
       // if (body.email === "admin" && body.password === "123456") {
       //   await toast.success("Đăng nhập thành công ");
       //   setTimeout(async () => {

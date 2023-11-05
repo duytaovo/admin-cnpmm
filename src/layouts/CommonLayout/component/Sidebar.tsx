@@ -18,12 +18,13 @@ import Brightness4OutlinedIcon from "@mui/icons-material/Brightness4Outlined";
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import LocalPoliceOutlinedIcon from "@mui/icons-material/LocalPoliceOutlined";
 import path from "src/constants/path";
+import { clearLS } from "src/utils/auth";
 export default function Sidebar() {
   const { enable, setEnable } = useContext(DarkModeContext);
   const { t } = useTranslation("home");
   const logout = () => {
     if (confirm("Bạn có muốn thoát không?")) {
-      localStorage.removeItem("token");
+      clearLS();
       window.location.reload();
     }
   };
