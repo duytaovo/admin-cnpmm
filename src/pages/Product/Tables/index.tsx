@@ -19,7 +19,7 @@ const TableProduct: React.FC = () => {
   const { product } = useAppSelector((state) => state.product);
   const navigate = useNavigate();
   useEffect(() => {
-    dispatch(getProducts(""));
+    dispatch(getProducts({limit:30}));
   }, []);
   const columns: ColumnsType<any> = [
     { title: "Tên sản phẩm", dataIndex: "name", key: "name" },
@@ -43,7 +43,6 @@ const TableProduct: React.FC = () => {
       key: "x",
       render: (params) => {
         const { key, _id } = params;
-        // console.log("first" + params._id);
         const handleDelete = async () => {
           const res = await dispatch(deleteProduct([_id]));
           unwrapResult(res);

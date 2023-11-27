@@ -20,7 +20,7 @@ import {
 import { Helmet } from "react-helmet-async";
 import { Spin } from "antd";
 import { CircularProgress } from "@mui/material";
-import logo from "./logo-main.png";
+import logo from "./logonew.jpg";
 
 type FormData = Pick<Schema, "email" | "password">;
 const loginSchema = schema.pick(["email", "password"]);

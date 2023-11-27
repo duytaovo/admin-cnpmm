@@ -226,32 +226,15 @@ const FormDisabledDemo: React.FC = () => {
             // placeholder="Màn hinh"
           />
         </Form.Item>
-        {/* <Form.Item
-          label="Link hình ảnh"
-          name="image"
-          rules={[{ required: true }]}
-        >
+        <Form.Item label="Giá khuyến mãi" name="price_before_discount">
           <Input
-            name="image"
+            name="price_before_discount"
             register={register}
             type="text"
             className=""
-            errorMessage={errors.image?.message}
+            errorMessage={errors.price_before_discount?.message}
           />
-        </Form.Item> */}
-        {/* <Form.Item
-          label="Link ảnh mô tả"
-          name="images"
-          rules={[{ required: true }]}
-        >
-          <Input
-            name="images"
-            register={register}
-            type="text"
-            className=""
-            errorMessage={errors.images?.message}
-          />
-        </Form.Item> */}
+        </Form.Item>
         <Form.Item
           label="Số lượng"
           name="quantity"
@@ -265,91 +248,8 @@ const FormDisabledDemo: React.FC = () => {
             errorMessage={errors.quantity?.message}
           />
         </Form.Item>
-        {/* <Form.Item label="Sim" name="sim" rules={[{ required: true }]}>
-          <SelectCustom
-            className={" text-black"}
-            id="sim"
-            // label="Hãng xe"
-            placeholder="Vui lòng chọn"
-            defaultValue={""}
-            options={["1 Sim", "2 Sim"]}
-            register={register}
-            isBrand={true}
-          >
-            {errors.sim?.message}
-          </SelectCustom>
-        </Form.Item>
-        <Form.Item label="Ram" name="ram" rules={[{ required: true }]}>
-          <SelectCustom
-            className={" text-black"}
-            id="Ram"
-            // label="Hãng xe"
-            placeholder="Vui lòng chọn"
-            defaultValue={""}
-            options={["2Gb", "4Gb", "6Gb", "8Gb", "16Gb", "32Gb"]}
-            register={register}
-            isBrand={true}
-          >
-            {errors.Ram?.message}
-          </SelectCustom>
-        </Form.Item>
-        <Form.Item label="Rom" name="rom" rules={[{ required: true }]}>
-          <SelectCustom
-            className={" text-black"}
-            id="Rom"
-            // label="Hãng xe"
-            placeholder="Vui lòng chọn"
-            defaultValue={""}
-            options={[
-              "2Gb",
-              "4Gb",
-              "6Gb",
-              "8Gb",
-              "16Gb",
-              "32Gb",
-              "64Gb",
-              "128Gb",
-              "256Gb",
-              "512Gb",
-              "1T",
-            ]}
-            register={register}
-            isBrand={true}
-          >
-            {errors.Rom?.message}
-          </SelectCustom>
-        </Form.Item>
-        <Form.Item label="Pin" name="pin" rules={[{ required: true }]}>
-          <Input
-            name="pin"
-            register={register}
-            type="text"
-            className=""
-            errorMessage={errors.chip?.message}
-          />
-        </Form.Item>
-        <Form.Item
-          label="Giá sản phẩm"
-          name="price"
-          rules={[{ required: true }]}
-        >
-          <Input
-            name="price"
-            register={register}
-            type="text"
-            className=""
-            errorMessage={errors.price?.message}
-          />
-        </Form.Item> */}
-        <Form.Item label="Khuyến mãi" name="price_before_discount">
-          <Input
-            name="price_before_discount"
-            register={register}
-            type="text"
-            className=""
-            errorMessage={errors.price_before_discount?.message}
-          />
-        </Form.Item>
+      
+      
         <Form.Item
           label="Mô tả"
           name="description"

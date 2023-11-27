@@ -5,8 +5,10 @@ const productApi = {
   addProduct(data: any) {
     return http.post("/admin/products", data);
   },
-  getProducts() {
-    return http.get<SuccessResponse<any>>("/admin/products", {});
+  getProducts(params:any) {
+    return http.get<SuccessResponse<any>>("/admin/products", {
+      params,
+    });
   },
   getDetailProduct(params: any) {
     return http.get<SuccessResponse<any[]>>(`/admin/products/detail/${params}`);
