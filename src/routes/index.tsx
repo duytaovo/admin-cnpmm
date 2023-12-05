@@ -9,7 +9,9 @@ const AddUser = lazy(() => import("src/pages/ListUser/NewUser"));
 const UpdateUser = lazy(() => import("src/pages/ListUser/UpdateUser"));
 const Products = lazy(() => import("src/pages/Product"));
 const Categorys = lazy(() => import("src/pages/Category"));
-const UpdateProduct = lazy(() => import("src/pages/Product/UpdateProduct"));
+const UpdateProduct = lazy(
+  () => import("src/pages/Product/UpdateProduct copy"),
+);
 const UpdateCategory = lazy(() => import("src/pages/Category/UpdateCategory"));
 const NewCategory = lazy(() => import("src/pages/Category/NewCategory"));
 const Purchase = lazy(() => import("src/pages/Purchases"));
@@ -66,3 +68,4 @@ export const routeMain = [
     Component: NotFound,
   },
 ];
+

@@ -7,7 +7,6 @@ import Login from "./pages/Login";
 import AuthenticatedGuard from "./guards/AuthenticatedGuard";
 import UnAuthenticatedGuard from "./guards/UnAuthenticatedGuard";
 import Products from "./pages/Product";
-import { typeProduct } from "./formSource";
 
 export default function useRouteElements() {
   const renderRouter = useMemo(() => {
@@ -62,3 +61,4 @@ export default function useRouteElements() {
 
   return <>{routeElements}</>;
 }
+

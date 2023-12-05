@@ -61,9 +61,8 @@ const FormDisabledDemo: React.FC = () => {
   const [componentDisabled, setComponentDisabled] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { category, categoryDetail } = useAppSelector(
-    (state) => state.category
+    (state) => state.category,
   );
-  console.log(category);
   const {
     handleSubmit,
     formState: { errors },
@@ -91,9 +90,7 @@ const FormDisabledDemo: React.FC = () => {
 
   useEffect(() => {
     dispatch(getCategorys(""));
-  }, []);
 
-  useEffect(() => {
     setValue("name", "");
     setValue("description", "");
     setValue("image", "");
@@ -103,7 +100,6 @@ const FormDisabledDemo: React.FC = () => {
     setValue("sold", "");
   }, []);
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
     let images = [];
     try {
       if (file) {
@@ -216,7 +212,20 @@ const FormDisabledDemo: React.FC = () => {
             errorMessage={errors.name?.message}
           />
         </Form.Item>
-        <Form.Item label="Price" name="price" rules={[{ required: true }]}>
+        <Form.Item label="Giá gốc" name="price_before_discount">
+          <Input
+            name="price_before_discount"
+            register={register}
+            type="text"
+            className=""
+            errorMessage={errors.price_before_discount?.message}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Giá khuyến mãi"
+          name="price"
+          rules={[{ required: true }]}
+        >
           <Input
             name="price"
             register={register}
@@ -224,15 +233,6 @@ const FormDisabledDemo: React.FC = () => {
             className=""
             errorMessage={errors.price?.message}
             // placeholder="Màn hinh"
-          />
-        </Form.Item>
-        <Form.Item label="Giá khuyến mãi" name="price_before_discount">
-          <Input
-            name="price_before_discount"
-            register={register}
-            type="text"
-            className=""
-            errorMessage={errors.price_before_discount?.message}
           />
         </Form.Item>
         <Form.Item
@@ -248,8 +248,6 @@ const FormDisabledDemo: React.FC = () => {
             errorMessage={errors.quantity?.message}
           />
         </Form.Item>
-      
-      
         <Form.Item
           label="Mô tả"
           name="description"
@@ -298,7 +296,7 @@ const FormDisabledDemo: React.FC = () => {
         <div className="flex justify-start">
           <Form.Item label="" className="ml-[115px] mb-2">
             <Button className="w-[100px]" onClick={onSubmit}>
-              Lưu
+              {isSubmitting ? "Loading..." : "Lưu"}
             </Button>
           </Form.Item>
           <Form.Item label="" className="ml-[50px] mb-2">
@@ -310,7 +308,7 @@ const FormDisabledDemo: React.FC = () => {
             <Button
               className="w-[100px]"
               onClick={() => {
-                navigate(path.users);
+                navigate(path.products);
               }}
             >
               Hủy
@@ -323,3 +321,4 @@ const FormDisabledDemo: React.FC = () => {
 };
 
 export default () => <FormDisabledDemo />;
+

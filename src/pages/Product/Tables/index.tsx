@@ -19,23 +19,24 @@ const TableProduct: React.FC = () => {
   const { product } = useAppSelector((state) => state.product);
   const navigate = useNavigate();
   useEffect(() => {
-    dispatch(getProducts({limit:30}));
+    dispatch(getProducts({ limit: 30 }));
   }, []);
   const columns: ColumnsType<any> = [
     { title: "Tên sản phẩm", dataIndex: "name", key: "name" },
     { title: "Tên thương hiệu", dataIndex: "category", key: "category" },
-    { title: "Giá sản phẩm", dataIndex: "price", key: "price" },
+    {
+      title: "Giá gốc",
+      dataIndex: "price_before_discount",
+      key: "price_before_discount",
+    },
+    { title: "Giá khuyến mãi ", dataIndex: "price", key: "price" },
 
     // { title: "Mô tả", dataIndex: "description", key: "description" },
     { title: "Số lượng", dataIndex: "quantity", key: "quantity" },
     { title: "Đánh giá", dataIndex: "rating", key: "rating" },
     { title: "Đã bán", dataIndex: "sold", key: "sold" },
     // { title: "Đã bán", dataIndex: "sold", key: "sold" },
-    {
-      title: "Khuyến mãi",
-      dataIndex: "price_before_discount",
-      key: "price_before_discount",
-    },
+
     { title: "Ngày tạo", dataIndex: "createdAt", key: "createdAt" },
     {
       title: "Action",
@@ -76,9 +77,10 @@ const TableProduct: React.FC = () => {
       },
     },
   ];
-  const originData: Product[] = [];
+  const originData = [];
   for (let i = 0; i < product.products?.length; i++) {
     originData.push({
+      key: product.products[i]._id,
       _id: product.products[i]._id,
       name: product.products[i].name,
       category: product.products[i].category?.name,
@@ -153,12 +155,12 @@ const TableProduct: React.FC = () => {
       </div>
       <Table
         columns={columns}
-        expandable={{
-          expandedRowRender: (record) => (
-            <p style={{ margin: 0 }}>{record?.description}</p>
-          ),
-          rowExpandable: (record) => record?.name !== "Not Expandable",
-        }}
+        // expandable={{
+        //   expandedRowRender: (record) => (
+        //     <p style={{ margin: 0 }}>{record?.description}</p>
+        //   ),
+        //   rowExpandable: (record) => record?.name !== "Not Expandable",
+        // }}
         dataSource={originData}
       />
     </div>
@@ -166,3 +168,4 @@ const TableProduct: React.FC = () => {
 };
 
 export default TableProduct;
+

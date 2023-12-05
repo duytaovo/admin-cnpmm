@@ -1,4 +1,3 @@
-import { PlusOutlined } from "@ant-design/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { Button, Form, Upload } from "antd";
@@ -17,6 +16,7 @@ import SelectCustom from "src/components/Select";
 import Textarea from "src/components/Textarea";
 import InputFile from "src/components/InputFile";
 import {
+  addProduct,
   getDetailProduct,
   getProducts,
   updateProduct,
@@ -89,29 +89,26 @@ const FormDisabledDemo: React.FC = () => {
   }
 
   useEffect(() => {
+    dispatch(getCategorys(""));
+
     dispatch(getDetailProduct(_id))
       .then(unwrapResult)
       .then((res) => {
         setProductDetail(res.data.data);
       });
   }, []);
-
+  console.log(productDetail);
   useEffect(() => {
     setValue("name", productDetail?.name);
     setValue("description", productDetail?.description);
-    setValue("category", productDetail?.category.name);
     setValue("price", productDetail?.price);
-    setValue("images", productDetail?.images);
     setValue("price_before_discount", productDetail?.price_before_discount);
     setValue("quantity", productDetail?.quantity);
     setValue("sold", productDetail?.sold);
   }, [productDetail]);
 
-  useEffect(() => {
-    dispatch(getCategorys(""));
-  }, []);
-
   const onSubmit = handleSubmit(async (data) => {
+    console.log(data);
     let images = [];
     try {
       if (file) {
@@ -135,7 +132,7 @@ const FormDisabledDemo: React.FC = () => {
         // rating: data.rating
         price_before_discount: data.price_before_discount,
         quantity: data.quantity,
-        sold: data.sold,
+        // sold: data.sold,
         // view: data.view,
         name: data.name,
         description: data.description,
@@ -143,9 +140,9 @@ const FormDisabledDemo: React.FC = () => {
         image: images[0],
       });
       setIsSubmitting(true);
-      const res = await dispatch(updateProduct(body));
+      const res = await dispatch(updateProduct({ _id, body }));
       unwrapResult(res);
-      // const d = res?.payload?.data;
+      // const d = res?.payload?.data.data;
       // if (d?.status !== 200) return toast.error(d?.message);
       await toast.success("Cập nhật sản phẩm thành công ");
       await dispatch(getProducts(""));
@@ -319,7 +316,7 @@ const FormDisabledDemo: React.FC = () => {
             <Button
               className="w-[100px]"
               onClick={() => {
-                navigate(path.users);
+                navigate(path.products);
               }}
             >
               Hủy

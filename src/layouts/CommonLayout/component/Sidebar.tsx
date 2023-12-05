@@ -101,7 +101,7 @@ export default function Sidebar() {
               </span>
             </li>
           </Link> */}
-          <Link to="/order" style={{ textDecoration: "none" }}></Link>
+          {/* <Link to="/order" style={{ textDecoration: "none" }}></Link>
           <p className="text-[10px] font-bold text-[#999] mt-[15px] mb-[5px]">
             USEFUL
           </p>
@@ -125,7 +125,7 @@ export default function Sidebar() {
             <span className="text-[13px] font-[600] text-[#888] ml-[10px]">
               {t("sidebar.profile")}
             </span>
-          </li>
+          </li> */}
           <li
             onClick={logout}
             className="flex item-center p-[5px] cursor-pointer hover:bg-[#ece8ff]"
@@ -154,3 +154,4 @@ export default function Sidebar() {
     </div>
   );
 }
+
