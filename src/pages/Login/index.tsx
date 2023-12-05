@@ -50,7 +50,6 @@ const Login = () => {
       unwrapResult(res);
       const d = res?.payload?.data;
       if (d?.result == 0) return toast.error(d?.message);
-      console.log(d);
       await setAccessTokenToLS(d?.data.access_token);
       await setRefreshTokenToLS(d?.data.refresh_token);
       await setIsAuthenticated(true);
@@ -141,3 +140,4 @@ const Login = () => {
 };
 
 export default Login;
+

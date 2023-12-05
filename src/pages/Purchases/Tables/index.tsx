@@ -127,7 +127,6 @@ const TablePurchase: React.FC = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -172,3 +171,4 @@ const TablePurchase: React.FC = () => {
 };
 
 export default TablePurchase;
+

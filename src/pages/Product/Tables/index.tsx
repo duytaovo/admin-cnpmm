@@ -97,7 +97,6 @@ const TableProduct: React.FC = () => {
       updatedAt: product.products[i].updatedAt,
     });
   }
-  console.log(originData);
   const [status, setStatus] = React.useState<string>("");
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -117,7 +116,6 @@ const TableProduct: React.FC = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 

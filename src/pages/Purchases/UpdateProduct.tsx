@@ -116,7 +116,6 @@ const FormDisabledDemo: React.FC = () => {
         }
         const res = await dispatch(uploadImageProduct(form));
         unwrapResult(res);
-        console.log(res);
         const d = res?.payload?.data;
       } else {
         toast.warning("Cần chọn ảnh");
@@ -443,3 +442,4 @@ const FormDisabledDemo: React.FC = () => {
 };
 
 export default () => <FormDisabledDemo />;
+

@@ -139,7 +139,6 @@ const TableUser: React.FC = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -187,3 +186,4 @@ const TableUser: React.FC = () => {
 };
 
 export default TableUser;
+

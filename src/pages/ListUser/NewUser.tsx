@@ -95,7 +95,6 @@ const FormDisabledDemo: React.FC = () => {
       setIsSubmitting(true);
       const res = await dispatch(addUser(body));
       unwrapResult(res);
-      console.log(res);
       const d = res?.payload;
       if (d?.status !== 200) return toast.error(d?.message);
       await toast.success("Thêm người dùng thành công ");

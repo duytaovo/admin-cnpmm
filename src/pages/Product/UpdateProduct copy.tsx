@@ -97,7 +97,6 @@ const FormDisabledDemo: React.FC = () => {
         setProductDetail(res.data.data);
       });
   }, []);
-  console.log(productDetail);
   useEffect(() => {
     setValue("name", productDetail?.name);
     setValue("description", productDetail?.description);
@@ -108,7 +107,6 @@ const FormDisabledDemo: React.FC = () => {
   }, [productDetail]);
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
     let images = [];
     try {
       if (file) {

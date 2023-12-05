@@ -112,7 +112,6 @@ const FormDisabledDemo: React.FC = () => {
         unwrapResult(res);
 
         const d = res?.payload?.data;
-        console.log("res", d);
         images = d.data;
       } else {
         toast.warning("Cần chọn ảnh");

@@ -60,9 +60,8 @@ const FormDisabledDemo: React.FC = () => {
   const [componentDisabled, setComponentDisabled] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { category, categoryDetail } = useAppSelector(
-    (state) => state.category
+    (state) => state.category,
   );
-  console.log(category);
   const {
     handleSubmit,
     formState: { errors },
@@ -114,7 +113,6 @@ const FormDisabledDemo: React.FC = () => {
         unwrapResult(res);
 
         const d = res?.payload?.data;
-        console.log("res", d);
         image = d.data;
       } else {
         toast.warning("Cần chọn ảnh");
@@ -443,3 +441,4 @@ const FormDisabledDemo: React.FC = () => {
 };
 
 export default () => <FormDisabledDemo />;
+

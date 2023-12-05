@@ -30,9 +30,8 @@ const FormDisabledDemo: React.FC = () => {
   const [componentDisabled, setComponentDisabled] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { category, categoryDetail } = useAppSelector(
-    (state) => state.category
+    (state) => state.category,
   );
-  console.log(category);
   const {
     handleSubmit,
     formState: { errors },
@@ -65,8 +64,6 @@ const FormDisabledDemo: React.FC = () => {
     setValue("name", "");
   }, []);
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
-
     try {
       const body = JSON.stringify({
         name: data.name,
@@ -156,3 +153,4 @@ const FormDisabledDemo: React.FC = () => {
 };
 
 export default () => <FormDisabledDemo />;
+
