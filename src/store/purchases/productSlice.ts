@@ -12,9 +12,22 @@ export const getDetailPurchase = createAsyncThunk(
   payloadCreator(purchasesApi.getDetailPurchase),
 );
 
-export const updatePurchase = createAsyncThunk(
-  "purchases/updatePurchase",
-  payloadCreator(purchasesApi.updatePurchase),
+export const updateGetting = createAsyncThunk(
+  "purchases/updateGetting",
+  payloadCreator(purchasesApi.updateGetting),
+);
+
+export const updateProgress = createAsyncThunk(
+  "purchases/updateProgress",
+  payloadCreator(purchasesApi.updateProgress),
+);
+export const updateDelivered = createAsyncThunk(
+  "purchases/updateDelivered",
+  payloadCreator(purchasesApi.updateDelivered),
+);
+export const updateCancel = createAsyncThunk(
+  "purchases/updateCancel",
+  payloadCreator(purchasesApi.updateCancel),
 );
 
 export const deletePurchase = createAsyncThunk(

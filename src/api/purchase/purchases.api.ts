@@ -10,9 +10,27 @@ const purchasesApi = {
       `/admin/purchases/detail/${params}`,
     );
   },
-  updatePurchase(_id: any) {
-    return http.put<SuccessResponse<any>>(`/admin/purchases/update/${_id}`);
+  updateGetting(_id: any) {
+    return http.put<SuccessResponse<any>>(
+      `/admin/purchases/updateGetting/${_id}`,
+    );
   },
+  updateProgress(_id: any) {
+    return http.put<SuccessResponse<any>>(
+      `/admin/purchases/updateProgress/${_id}`,
+    );
+  },
+  updateDelivered(_id: any) {
+    return http.put<SuccessResponse<any>>(
+      `/admin/purchases/updateDelivered/${_id}`,
+    );
+  },
+  updateCancel(_id: any) {
+    return http.put<SuccessResponse<any>>(
+      `/admin/purchases/updateCancel/${_id}`,
+    );
+  },
+
   deletePurchase(idProduct: string[]) {
     return http.delete<SuccessResponse<any>>(
       `/admin/purchases/delete/${idProduct}`,

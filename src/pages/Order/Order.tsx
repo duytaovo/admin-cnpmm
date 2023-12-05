@@ -3,51 +3,54 @@ import { Table } from "flowbite-react";
 import OrderDetail from "./OrderDetail";
 import "./table.scss";
 import clsx from "clsx";
-
 import { useState } from "react";
 import numberWithCommas from "src/utils/numberWithCommas";
 import { useAppDispatch, useAppSelector } from "src/hooks/useRedux";
-
 import { Button, Pagination } from "antd";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
-import { getPurchase, updatePurchase } from "src/store/purchases/productSlice";
+import {
+  getPurchase,
+  updateCancel,
+  updateDelivered,
+  updateGetting,
+  updateProgress,
+} from "src/store/purchases/productSlice";
 
 const Order = ({ title }: { title?: string }) => {
-  const style = (text: string) => {
+  const style = (text: number) => {
     switch (text) {
-      case "Ordered":
+      case 1:
         return "text-blue-400 uppercase text-xl font-bold";
-      case "Delivering":
-        return "text-blue-400";
-      case "Cancelled":
+      case 2:
+        return "text-blue-400 uppercase text-xl font-bold";
+      case 5:
         return "text-red-400 uppercase text-xl font-bold";
-      case "Confirmed":
+      case 3:
         return "text-green-400 font-bold uppercase text-xl";
-      case "Delivered":
+      case 4:
         return "text-yellow-400 font-bold uppercase text-xl";
     }
   };
 
-  const stringStatus = (text: string) => {
+  const stringStatus = (text: number) => {
     switch (text) {
-      case "Ordered":
+      case 1:
         return "Đã đặt hàng";
-      case "Delivering":
+      case 3:
         return "ĐANG GIAO HÀNG";
-      case "Cancelled":
+      case 5:
         return "Đã hủy";
-      case "Confirmed":
+      case 2:
         return "Đã xác nhận";
-      case "Delivered":
+      case 4:
         return "Đã giao hàng";
     }
   };
   const [orderDetail, setOrderDetail] = useState({ index: -1, id: null });
   const dispatch = useAppDispatch();
   const { purchase } = useAppSelector((state) => state.purchase);
-  console.log(purchase);
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(getPurchase(""));
@@ -56,9 +59,9 @@ const Order = ({ title }: { title?: string }) => {
   const [currentPage, setCurrentPage] = useState(0); // Trang hiện tại
   const pageSize = 10; // Số phần tử trên mỗi trang
 
-  const handleAccept = async (id: number) => {
+  const _updateGetting = async (id: number) => {
     if (confirm("Bạn có muốn Xác nhận đơn hàng không?")) {
-      const res = await dispatch(updatePurchase(id));
+      const res = await dispatch(updateGetting(id));
 
       if (res) {
         toast.success("Xác nhận thành công");
@@ -67,40 +70,40 @@ const Order = ({ title }: { title?: string }) => {
     }
   };
 
-  // const handleAcceptSuccess = async (id: number) => {
-  //   if (confirm("Bạn có muốn Xác nhận đơn hàng thành công không?")) {
-  //     const res = await dispatch(updatePurchasesSuccess(id));
+  const _updateDelivered = async (id: number) => {
+    if (confirm("Bạn có muốn Xác nhận đơn hàng thành công không?")) {
+      const res = await dispatch(updateDelivered(id));
 
-  //     if (res) {
-  //       toast.success("Giao hàng thành công");
-  //     }
-  //     dispatch(getPurchases(""));
-  //   }
-  // };
+      if (res) {
+        toast.success("Giao hàng thành công");
+      }
+      dispatch(getPurchase(""));
+    }
+  };
 
-  // const handleAcceptDelivery = async (id: number) => {
-  //   if (confirm("Bạn có muốn giao cho đơn vị vận chuyển không?")) {
-  //     const res = await dispatch(updatePurchasesDelivery(id));
+  const _updateProgress = async (id: number) => {
+    if (confirm("Bạn có muốn giao cho đơn vị vận chuyển không?")) {
+      const res = await dispatch(updateProgress(id));
 
-  //     if (res) {
-  //       toast.success("Chuyển giao thành công");
-  //     }
-  //     dispatch(getPurchases(""));
-  //   }
-  // };
+      if (res) {
+        toast.success("Chuyển giao thành công");
+      }
+      dispatch(getPurchase(""));
+    }
+  };
 
-  // const handleCancel = async (id: number) => {
-  //   if (confirm("Bạn có muốn Hủy đơn hàng không?")) {
-  //     const res = await dispatch(updatePurchasesCancel(id));
-  //     if (res) {
-  //       toast.success("Hủy đơn thành công");
-  //     }
-  //     dispatch(getPurchases(""));
-  //   }
-  // };
+  const _handleCancel = async (id: number) => {
+    if (confirm("Bạn có muốn Hủy đơn hàng không?")) {
+      const res = await dispatch(updateCancel(id));
+      if (res) {
+        toast.success("Hủy đơn thành công");
+      }
+      dispatch(getPurchase(""));
+    }
+  };
 
   // useEffect(() => {
-  //   dispatch(getPurchases({ pageNumber: currentPage }));
+  //   dispatch(getPurchase({ pageNumber: currentPage }));
   // }, [currentPage]);
 
   const handlePageChange = (page: number) => {
@@ -122,19 +125,20 @@ const Order = ({ title }: { title?: string }) => {
           <Table.HeadCell> Mã đơn hàng </Table.HeadCell>
           <Table.HeadCell>Sản phẩm</Table.HeadCell>
           <Table.HeadCell>Số lượng</Table.HeadCell>
+          {/* <Table.HeadCell>Giá gốc</Table.HeadCell> */}
           <Table.HeadCell>Giá</Table.HeadCell>
           <Table.HeadCell> Ngày đặt mua</Table.HeadCell>
           <Table.HeadCell>Trạng thái</Table.HeadCell>
-          {/* <Table.HeadCell>
+          <Table.HeadCell>
             <span className="">Chỉnh sửa</span>
-          </Table.HeadCell> */}
+          </Table.HeadCell>
         </Table.Head>
         <Table.Body className=" ">
           {purchase?.map((_order: any, index: number) => {
-            const styleStatus = style(_order?.orderStatusString);
+            const styleStatus = style(_order?.status);
             const displayDetail = index === orderDetail?.index;
             const displayCancelBtn = _order.status != 1;
-            const displayButtonDelivered = _order.orderStatus === 4;
+            const displayButtonDelivered = _order.status === 4;
 
             return (
               <>
@@ -154,11 +158,11 @@ const Order = ({ title }: { title?: string }) => {
                           return current.index === index
                             ? {
                                 index: -1,
-                                id: _order.id,
+                                id: _order._id,
                               }
                             : {
                                 index,
-                                id: _order.id,
+                                id: _order._id,
                               };
                         })
                       }
@@ -169,6 +173,9 @@ const Order = ({ title }: { title?: string }) => {
                   <Table.Cell className="text-2xl">
                     {_order?.buy_count}
                   </Table.Cell>
+                  {/* <Table.Cell className="text-red-400 text-2xl">
+                    {numberWithCommas(_order?.price_before_discount)}₫
+                  </Table.Cell> */}
                   <Table.Cell className="text-red-400 text-2xl">
                     {numberWithCommas(_order?.price)}₫
                   </Table.Cell>
@@ -176,34 +183,79 @@ const Order = ({ title }: { title?: string }) => {
                     {" "}
                     <p className="">{_order?.createdAt.substring(0, 10)}</p>
                   </Table.Cell>
-
+                  <Table.Cell className={styleStatus}>
+                    <div className="flex flex-grow justify-between text-xl font-bold">
+                      {stringStatus(_order.status)}
+                      <span className="text-white text-xl bg-gray-500 p-2 rounded-lg">
+                        Chưa thanh toán
+                      </span>
+                    </div>
+                  </Table.Cell>
                   <Table.Cell className="space-x-3">
-                    {_order.status === 1 && (
+                    {_order.status === 1 ? (
                       <Button
                         type="link"
                         // disabled={displayCancelBtn}
                         id={_order._id}
-                        onClick={() => handleAccept(_order._id)}
+                        onClick={() => _updateGetting(_order._id)}
                         className={clsx(
-                          "bg-green-500 text-xl font-medium rounded-lg  text-white",
+                          "bg-yellow-500 text-xl font-medium rounded-lg  text-white",
                         )}
                       >
                         Xác nhận
                       </Button>
-                    )}
-                    {_order.status === 4 && (
+                    ) : _order.status === 2 ? (
+                      <Button
+                        type="link"
+                        // disabled={displayCancelBtn}
+                        id={_order._id}
+                        onClick={() => _updateProgress(_order._id)}
+                        className={clsx(
+                          "bg-blue-500 text-xl font-medium rounded-lg  text-white",
+                        )}
+                      >
+                        Giao vận chuyển
+                      </Button>
+                    ) : _order.status === 3 ? (
+                      <Button
+                        type="link"
+                        disabled={displayButtonDelivered}
+                        id={_order._id}
+                        onClick={() => _updateDelivered(_order._id)}
+                        className={clsx(
+                          "bg-green-500 text-xl font-medium rounded-lg  text-white",
+                          displayButtonDelivered &&
+                            "!bg-gray-100 !text-gray-700",
+                        )}
+                      >
+                        Đã giao hàng
+                      </Button>
+                    ) : (
                       <Button
                         type="link"
                         disabled={displayCancelBtn}
                         id={_order._id}
-                        onClick={() => handleAccept(_order._id)}
+                        // onClick={() => handleAccept(_order._id)}
                         className={clsx(
-                          "bg-gray-200 text-xl font-medium rounded-lg  text-white",
+                          displayCancelBtn && "!bg-gray-100 !text-gray-700",
                         )}
                       >
                         Xác nhận
                       </Button>
                     )}
+
+                    <Button
+                      type="link"
+                      disabled={displayCancelBtn}
+                      id={_order._id}
+                      onClick={() => _handleCancel(_order._id)}
+                      className={clsx(
+                        "bg-red-500 text-xl font-medium rounded-lg  text-white",
+                        displayCancelBtn && "!bg-gray-100 !text-gray-700",
+                      )}
+                    >
+                      Hủy đơn
+                    </Button>
                   </Table.Cell>
                 </Table.Row>
                 {displayDetail && (
@@ -227,7 +279,7 @@ const Order = ({ title }: { title?: string }) => {
         <Pagination
           current={currentPage + 1}
           pageSize={pageSize}
-          total={order?.data?.totalElements}
+          total={purchase?.length}
           onChange={handlePageChange}
         />
       </div> */}

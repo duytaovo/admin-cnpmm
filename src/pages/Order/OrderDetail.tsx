@@ -60,7 +60,7 @@ const OrderDetail = ({ order, index, setOrderDetail }: Props) => {
             Trạng thái: <span className={style(order.status)}>{"Đã đặt"}</span>
           </p>
         </div>
-        <p className="text-2xl">Mua tại docongnghe.com</p>
+        <p className="text-2xl">Mua tại website.com</p>
       </div>
       <div>
         <p className="font-medium text-3xl">
@@ -68,7 +68,7 @@ const OrderDetail = ({ order, index, setOrderDetail }: Props) => {
         </p>
 
         <p className="font-medium text-xl">
-          Số lượng: {purchaseDetail?.purchaseInDb?.product?.quantity}
+          Số lượng: {purchaseDetail?.purchaseInDb?.buy_count}
         </p>
       </div>
       <div className="font-medium text-3xl">
@@ -94,19 +94,29 @@ const OrderDetail = ({ order, index, setOrderDetail }: Props) => {
         );
       })}
       <div className="border-b p-4 text-2xl leading-[40px]">
-        <p>Giá tạm tính: {numberWithCommas(order?.price_before_discount)}₫</p>
+        <p>
+          Giá tạm tính:{" "}
+          {numberWithCommas(
+            purchaseDetail?.purchaseInDb?.price *
+              purchaseDetail?.purchaseInDb?.buy_count,
+          )}
+          ₫
+        </p>
         <p>
           <span className="">Phí giao hàng: </span>{" "}
           <span>{numberWithCommas(0)}₫</span>
         </p>
         <p>
-          <span className="">Giảm giá: </span>{" "}
-          <span>{numberWithCommas(order?.price)}₫</span>
+          {/* <span className="">Giảm giá: </span>{" "} */}
+          {/* <span>{numberWithCommas(order?.price)}₫</span> */}
         </p>
         <p>
           <span className="font-bold">Tổng tiền: </span>
           <span className="text-red-500">
-            {numberWithCommas(order?.price)}₫
+            {numberWithCommas(
+              purchaseDetail?.purchaseInDb?.price *
+                purchaseDetail?.purchaseInDb?.buy_count,
+            )}
           </span>
         </p>
         <p>
