@@ -1,19 +1,22 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { unwrapResult } from "@reduxjs/toolkit";
-
 import { Button, Form, Upload } from "antd";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Input from "src/components/Input";
+import InputFile from "src/components/InputFile";
+import SelectCustom from "src/components/Select";
 import path from "src/constants/path";
 import { useAppDispatch } from "src/hooks/useRedux";
+import { uploadImagesProduct } from "src/store/product/productSlice";
 import {
   getDetailUser,
   getUsers,
   updateUserProfile,
+  uploadAvatar,
 } from "src/store/user/userSlice";
 import { ErrorResponse } from "src/types/utils.type";
 import { schemaAddUser } from "src/utils/rules";
@@ -37,9 +40,18 @@ const FormDisabledDemo: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [file, setFile] = useState<File[]>();
   const { user_id } = useParams();
   const [userDetail, setUserDetail] = useState<any>();
+  const [file, setFile] = useState<File[]>();
+  const imageArray = file || []; // Mảng chứa các đối tượng ảnh (File hoặc Blob)
+
+  // Tạo một mảng chứa các URL tạm thời cho ảnh
+  const imageUrls: string[] = [];
+
+  for (const image of imageArray) {
+    const imageUrl = URL.createObjectURL(image);
+    imageUrls.push(imageUrl);
+  }
   const {
     handleSubmit,
     formState: { errors },
@@ -67,33 +79,32 @@ const FormDisabledDemo: React.FC = () => {
   }, [userDetail]);
 
   const onSubmit = handleSubmit(async (data) => {
-    const body = JSON.stringify({
-      email: data.email,
-      address: data.address,
-      password: data.password,
-      name: data.name,
-      phone: data.phone,
-      roles: "User",
-      // date_of_birth,
-      // avatar,
-    });
-    // if (file) {
-    //   const form = new FormData();
-    //   form.append("file", file[0]);
-    //   form.append("image", file[0]);
-    //   const res = await dispatch(uploadAvatar(uploadAvatar));
-    //   unwrapResult(res);
-    // } else {
-    //   toast.warning("Cần chọn ảnh");
-    // }
+    let images = [];
 
     try {
+      if (file) {
+        const form = new FormData();
+        form.append("image", file[0]);
+        const res = await dispatch(uploadAvatar(form));
+        unwrapResult(res);
+        const d = res?.payload?.data;
+        images = d.data;
+      }
+      const body = JSON.stringify({
+        email: data.email,
+        address: data.address,
+        password: data.password,
+        name: data.name,
+        phone: data.phone,
+        roles: data.role,
+        avatar: images[0] || null,
+      });
       setIsSubmitting(true);
       const res = await dispatch(updateUserProfile({ user_id, body }));
       unwrapResult(res);
       const d = res?.payload;
       if (d?.status !== 200) return toast.error(d?.message);
-      await toast.success("Cập nhật thành công ");
+      await toast.success("Cập nhật người dùng thành công ");
       await dispatch(getUsers(""));
       await navigate(path.users);
     } catch (error: any) {
@@ -119,7 +130,9 @@ const FormDisabledDemo: React.FC = () => {
     setValue("name", userDetail.name);
     setValue("phone", userDetail.phone);
   };
-
+  const handleChangeFile = (file?: File[]) => {
+    setFile(file);
+  };
   return (
     <div className="bg-white shadow ">
       <h2 className="font-bold m-4 text-2xl">Cập nhật người dùng</h2>
@@ -132,6 +145,20 @@ const FormDisabledDemo: React.FC = () => {
         noValidate
         onSubmitCapture={onSubmit}
       >
+        <Form.Item label="vai trò" name="" rules={[{ required: true }]}>
+          <SelectCustom
+            className={"flex-1 text-black"}
+            id="role"
+            placeholder="Vai trò"
+            options={[
+              { _id: 0, name: "Người dùng" },
+              { _id: 1, name: "Admin" },
+            ]}
+            register={register}
+          >
+            {errors.role?.message}
+          </SelectCustom>
+        </Form.Item>
         <Form.Item name="email" label="Email" rules={[{ required: true }]}>
           <Input
             name="email"
@@ -141,7 +168,7 @@ const FormDisabledDemo: React.FC = () => {
             errorMessage={errors.email?.message}
           />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           name="password"
           label="Password"
           rules={[{ required: true }]}
@@ -149,11 +176,11 @@ const FormDisabledDemo: React.FC = () => {
           <Input
             name="password"
             register={register}
-            type="text"
+            type="password"
             className=""
             errorMessage={errors.password?.message}
           />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item name="name" label="Họ Tên" rules={[{ required: true }]}>
           <Input
             name="name"
@@ -185,23 +212,35 @@ const FormDisabledDemo: React.FC = () => {
             errorMessage={errors.phone?.message}
           />
         </Form.Item>
-        <Form.Item
-          name="file"
-          label="Upload"
-          valuePropName="fileList"
-          getValueFromEvent={normFile}
-        >
-          <Upload action="/" listType="picture-card">
-            <div>
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>Upload</div>
+        <Form.Item name="file" label="Hình ảnh" valuePropName="fileList">
+          <div className="flex flex-col items-start ">
+            <div className="my-5 w-24 space-y-5 justify-between items-center">
+              {imageUrls.map((imageUrl, index) => {
+                return (
+                  <img
+                    key={index}
+                    src={imageUrl}
+                    className="h-full rounded-md w-full  object-cover"
+                    alt="avatar"
+                  />
+                );
+              })}
             </div>
-          </Upload>
+            <InputFile
+              label="Upload ảnh"
+              onChange={handleChangeFile}
+              id="images"
+            />
+            <div className="mt-3  flex flex-col items-center text-red-500">
+              <div>Dụng lượng file tối đa 2 MB</div>
+              <div>Định dạng:.JPEG, .PNG</div>
+            </div>
+          </div>
         </Form.Item>
         <div className="flex justify-start">
           <Form.Item label="" className="ml-[100px] mb-2">
             <Button className="w-[100px]" onClick={onSubmit}>
-              Lưu
+              {isSubmitting ? "Loading..." : "Lưu"}
             </Button>
           </Form.Item>
           <Form.Item label="" className="ml-[20px] mb-2">
@@ -226,3 +265,4 @@ const FormDisabledDemo: React.FC = () => {
 };
 
 export default () => <FormDisabledDemo />;
+

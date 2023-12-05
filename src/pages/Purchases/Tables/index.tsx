@@ -4,13 +4,9 @@ import { useAppDispatch, useAppSelector } from "src/hooks/useRedux";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { SelectChangeEvent } from "@mui/material/Select";
-import path from "src/constants/path";
-
 import React, { useEffect, useState } from "react";
 import { Button, Space, Table, Typography } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { deleteProduct, getProducts } from "src/store/product/productSlice";
-import { Product } from "src/types/product.type";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import {
@@ -28,16 +24,16 @@ const TablePurchase: React.FC = () => {
   }, []);
   const columns: ColumnsType<any> = [
     { title: "Tên sản phẩm", dataIndex: "product_name", key: "product_name" },
-    { title: "Giá sản phẩm", dataIndex: "price", key: "price" },
-
-    // { title: "Mô tả", dataIndex: "description", key: "description" },
-    { title: "Số lượng", dataIndex: "buy_count", key: "buy_count" },
-    { title: "Đánh giá", dataIndex: "rating", key: "rating" },
     {
-      title: "Khuyến mãi",
+      title: "Giá gốc",
       dataIndex: "price_before_discount",
       key: "price_before_discount",
     },
+    { title: "Giá khuyến mãi", dataIndex: "price", key: "price" },
+    // { title: "Mô tả", dataIndex: "description", key: "description" },
+    { title: "Số lượng", dataIndex: "buy_count", key: "buy_count" },
+    // { title: "Đánh giá", dataIndex: "rating", key: "rating" },
+
     { title: "Trạng thái", dataIndex: "status", key: "status" },
 
     { title: "Ngày tạo", dataIndex: "createdAt", key: "createdAt" },
@@ -66,7 +62,6 @@ const TablePurchase: React.FC = () => {
         };
         return (
           <Space>
-            {/* <Link to={`/product/detail/${_id}`}> */}{" "}
             <IconButton className="text-mainColor" onClick={handleUpdate}>
               <EditIcon
                 className="text-mainColor"
@@ -75,14 +70,11 @@ const TablePurchase: React.FC = () => {
                 }}
               />
             </IconButton>
-            {/* </Link> */}
-            {/* <Link to={path.users}> */}
             <Tooltip title="Thay đổi trạng thái " className="disabled:bg-white">
               <IconButton onClick={handleDelete}>
                 <DeleteIcon className="text-red-700" />
               </IconButton>
             </Tooltip>
-            {/* </Link> */}
           </Space>
         );
       },
@@ -91,20 +83,20 @@ const TablePurchase: React.FC = () => {
   const originData: any[] = [];
   for (let i = 0; i < purchase?.length; i++) {
     originData.push({
+      key: purchase[i]?._id,
       _id: purchase[i]?._id,
       buy_count: purchase[i]?.buy_count,
       price: purchase[i]?.price,
       price_before_discount: purchase[i]?.price_before_discount,
       status: purchase[i].status === 4 ? "Đã giao" : "Đang xác nhận",
       product_name: purchase[i].product?.name,
-      // description: purchase[i].product?.description,
       product_id: purchase[i].product?._id,
       rating: purchase[i].product?.rating,
       images: purchase[i].product?.images,
       image: purchase[i].product?.image,
       sold: purchase[i].product?.sold,
       view: purchase[i].product?.view,
-      createdAt: purchase[i].createdAt,
+      createdAt: purchase[i].createdAt.substring(0, 10),
       updatedAt: purchase[i].updatedAt,
     });
   }
@@ -127,6 +119,7 @@ const TablePurchase: React.FC = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+    console.log(newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -158,6 +151,7 @@ const TablePurchase: React.FC = () => {
       </div>
       <Table
         columns={columns}
+        rowSelection={{ ...rowSelection }}
         expandable={{
           expandedRowRender: (record) => (
             <p style={{ margin: 0 }}>{record?.description}</p>

@@ -4,22 +4,22 @@ import { payloadCreator } from "src/utils/utils";
 
 export const getPurchase = createAsyncThunk(
   "purchases/getPurchase",
-  payloadCreator(purchasesApi.getPurchases)
+  payloadCreator(purchasesApi.getPurchases),
 );
 
 export const getDetailPurchase = createAsyncThunk(
   "purchases/getDetailProduct",
-  payloadCreator(purchasesApi.getPurchases)
+  payloadCreator(purchasesApi.getDetailPurchase),
 );
 
 export const updatePurchase = createAsyncThunk(
   "purchases/updatePurchase",
-  payloadCreator(purchasesApi.updatePurchase)
+  payloadCreator(purchasesApi.updatePurchase),
 );
 
 export const deletePurchase = createAsyncThunk(
   "purchases/deletePurchase",
-  payloadCreator(purchasesApi.deletePurchase)
+  payloadCreator(purchasesApi.deletePurchase),
 );
 
 interface IProudct {
@@ -42,9 +42,9 @@ const purchaseSlice = createSlice({
     builder.addCase(getPurchase.fulfilled, (state, { payload }) => {
       state.purchase = payload.data.data;
     });
-    // builder.addCase(getDetailpurchase.fulfilled, (state, { payload }) => {
-    //   state.purchaseDetail = payload.data;
-    // });
+    builder.addCase(getDetailPurchase.fulfilled, (state, { payload }) => {
+      state.purchaseDetail = payload.data;
+    });
     // builder.addCase(updatepurchase.fulfilled, (state, { payload }) => {
     //   [state.purchaseDetail, ...payload.data];
     // });
@@ -56,3 +56,4 @@ const purchaseSlice = createSlice({
 
 const purchaseReducer = purchaseSlice.reducer;
 export default purchaseReducer;
+

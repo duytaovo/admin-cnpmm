@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Input from "src/components/Input";
 import InputFile from "src/components/InputFile";
+import SelectCustom from "src/components/Select";
 import path from "src/constants/path";
 import { useAppDispatch } from "src/hooks/useRedux";
 import {
@@ -66,31 +67,27 @@ const FormDisabledDemo: React.FC = () => {
   }, []);
 
   const onSubmit = handleSubmit(async (data) => {
-    let images = [];
+    let images;
     try {
       if (file) {
         const form = new FormData();
-        form.append("file", file[0]);
-        for (let i = 0; i < file.length; i++) {
-          form.append("images", file[i]);
-        }
-        const res = await dispatch(uploadImagesProduct(form));
+        form.append("image", file[0]);
+
+        const res = await dispatch(uploadAvatar(form));
         unwrapResult(res);
 
         const d = res?.payload?.data;
         images = d.data;
-      } else {
-        toast.warning("Cần chọn ảnh");
       }
+      console.log(images);
       const body = JSON.stringify({
         email: data.email,
         address: data.address,
         password: data.password,
         name: data.name,
         phone: data.phone,
-        // date_of_birth,
-        roles: "0",
-        avatar: images[0],
+        roles: data.role,
+        avatar: images,
       });
       setIsSubmitting(true);
       const res = await dispatch(addUser(body));
@@ -130,7 +127,7 @@ const FormDisabledDemo: React.FC = () => {
     <div className="bg-white shadow ">
       <h2 className="font-bold m-4 text-2xl">Thêm người dùng</h2>
       <Form
-        labelCol={{ span: 4 }}
+        labelCol={{ span: 6 }}
         wrapperCol={{ span: 14 }}
         layout="horizontal"
         style={{ maxWidth: 600, padding: 5 }}
@@ -138,12 +135,20 @@ const FormDisabledDemo: React.FC = () => {
         noValidate
         onSubmitCapture={onSubmit}
       >
-        {/* <Form.Item label="Giới tính">
-          <Radio.Group>
-            <Radio value="apple"> Nam </Radio>
-            <Radio value="pear"> Nữ </Radio>
-          </Radio.Group>
-        </Form.Item> */}
+        <Form.Item label="Vai trò" name="" rules={[{ required: true }]}>
+          <SelectCustom
+            className={"flex-1 text-black"}
+            id="role"
+            placeholder="Vai trò"
+            options={[
+              { _id: 0, name: "Người dùng" },
+              { _id: 1, name: "Admin" },
+            ]}
+            register={register}
+          >
+            {errors.role?.message}
+          </SelectCustom>
+        </Form.Item>
         <Form.Item name="email" label="Email" rules={[{ required: true }]}>
           <Input
             name="email"
@@ -161,9 +166,22 @@ const FormDisabledDemo: React.FC = () => {
           <Input
             name="password"
             register={register}
-            type="text"
+            type="password"
             className=""
             errorMessage={errors.password?.message}
+          />
+        </Form.Item>
+        <Form.Item
+          name="confirmPassword"
+          label="Confirm Password"
+          rules={[{ required: true }]}
+        >
+          <Input
+            name="confirmPassword"
+            register={register}
+            type="confirmPassword"
+            className=""
+            errorMessage={errors.confirmPassword?.message}
           />
         </Form.Item>
         <Form.Item name="name" label="Họ Tên" rules={[{ required: true }]}>
@@ -197,30 +215,16 @@ const FormDisabledDemo: React.FC = () => {
             errorMessage={errors.phone?.message}
           />
         </Form.Item>
-        {/* <Form.Item label="TreeSelect">
-          <TreeSelect
-            treeData={[
-              {
-                title: "Light",
-                value: "light",
-                children: [{ title: "Bamboo", value: "bamboo" }],
-              },
-            ]}
-          />
-        </Form.Item> */}
-        {/* <Form.Item label="InputNumber">
-          <InputNumber />
-        </Form.Item> */}
+
         <Form.Item
           name="file"
-          rules={[{ required: true }]}
           label="Hình ảnh"
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
           <div className="flex flex-col items-start ">
             <div className="my-5 w-24 space-y-5 justify-between items-center">
-              {imageUrls.map((imageUrl, index) => {
+              {imageUrls?.map((imageUrl, index) => {
                 return (
                   <img
                     key={index}
@@ -245,7 +249,7 @@ const FormDisabledDemo: React.FC = () => {
         <div className="flex justify-start">
           <Form.Item label="" className="ml-[100px] mb-2">
             <Button className="w-[100px]" onClick={onSubmit}>
-              Lưu
+              {isSubmitting ? "Loading..." : "Lưu"}
             </Button>
           </Form.Item>
           <Form.Item label="" className="ml-[20px] mb-2">

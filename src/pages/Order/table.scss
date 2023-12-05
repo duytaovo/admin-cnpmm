@@ -1,16 +1,11 @@
 th,
 td {
   white-space: nowrap;
-  text-align: center;
-}
-td {
-  font-size: 16px;
 }
 th {
-  font-size: 14px;
-  padding-right: 40px;
-  padding-left: 40px;
-  height: 100px;
+  font-size: 1.8em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 tr {
   overflow: hidden;
@@ -57,3 +52,4 @@ tr {
     }
   }
 }
+

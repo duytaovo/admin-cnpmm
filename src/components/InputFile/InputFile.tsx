@@ -14,8 +14,7 @@ export default function InputFile({ onChange, id, label }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileFromLocal = event.target.files?.[0];
-    const fileFromLocal2 = event.target.files?.[1];
-    const fileFromLocal3 = event.target.files?.[2];
+
     const fileUpload: any = event.target.files;
     fileInputRef.current?.setAttribute("value", "");
     if (
@@ -29,7 +28,7 @@ export default function InputFile({ onChange, id, label }: Props) {
         toast.error(`Chỉ được upload tối đa 6 ảnh`, {});
       } else {
         const files = Array.from(fileUpload);
-        files.length > 6 ? files.slice(0, 6) : files;
+        files.length > 6 ? files?.slice(0, 6) : files;
         onChange && onChange(files);
       }
     }
@@ -64,3 +63,4 @@ export default function InputFile({ onChange, id, label }: Props) {
     </Fragment>
   );
 }
+

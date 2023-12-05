@@ -24,7 +24,7 @@ const TableProduct: React.FC = () => {
   const { category } = useAppSelector((state) => state.category);
   const columns: ColumnsType<any> = [
     { title: "Tên danh mục", dataIndex: "name", key: "name" },
-    { title: "Ngày tạo", dataIndex: "createdAt", key: "createdAt" },
+    // { title: "Ngày tạo", dataIndex: "createdAt", key: "createdAt" },
 
     {
       title: "Action",
@@ -96,3 +96,4 @@ const TableProduct: React.FC = () => {
 };
 
 export default TableProduct;
+

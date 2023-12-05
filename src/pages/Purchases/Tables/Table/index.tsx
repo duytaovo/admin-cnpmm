@@ -35,12 +35,10 @@ const DataTable = ({
           // checkboxSelection
         />
       </div>
-      <div className="">
-        {/* <p className=''>{`Total: ${totalItems}`}</p> */}
-        {/* <PaginationCustom totalPages={totalPages} handleOnChange={handleOnChange} /> */}
-      </div>
+      <div className=""></div>
     </Paper>
   );
 };
 
 export default DataTable;
+

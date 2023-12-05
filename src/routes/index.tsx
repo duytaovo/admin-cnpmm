@@ -24,7 +24,7 @@ export const routeMain = [
   },
   {
     path: path.orders,
-    Component: Purchase,
+    Component: Orders,
   },
   {
     path: path.users,

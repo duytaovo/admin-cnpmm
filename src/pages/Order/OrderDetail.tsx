@@ -2,13 +2,23 @@ import { CheckCircleFill } from "react-bootstrap-icons";
 
 import "./table.scss";
 import numberWithCommas from "src/utils/numberWithCommas";
-
-function OrderDetail(props: any) {
-  const { customer } = props;
-  const orderItems = props.order_items.data;
-
-  const deliveryTime = "3/8/2023";
-  const amountPaid = props.totalPrice;
+import { Button } from "antd";
+import { useAppDispatch, useAppSelector } from "src/hooks/useRedux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import {
+  getDetailPurchase,
+  getPurchase,
+} from "src/store/purchases/productSlice";
+import { getDetailUser } from "src/store/user/userSlice";
+interface Props {
+  order: any;
+  displayDetail: any;
+  setOrderDetail: any;
+  index: number;
+}
+const OrderDetail = ({ order, index, setOrderDetail }: Props) => {
+  console.log(order);
   const surcharge = 20000;
   const style = (text: string) => {
     switch (text) {
@@ -23,100 +33,133 @@ function OrderDetail(props: any) {
         return "text-gray-400";
     }
   };
+  const dispatch = useAppDispatch();
+  const { purchase, purchaseDetail } = useAppSelector(
+    (state) => state.purchase,
+  );
+  const { userDetail, user } = useAppSelector((state) => state.user);
+  const navigate = useNavigate();
+  useEffect(() => {
+    dispatch(getDetailPurchase(order?._id));
+  }, []);
 
+  useEffect(() => {
+    if (purchaseDetail?.purchaseInDb?.user !== undefined) {
+      dispatch(getDetailUser(purchaseDetail?.purchaseInDb?.user));
+    } else {
+    }
+  }, [purchaseDetail]);
+  console.log(userDetail);
+  const checkPayment = order?.paymentStatusString === "Unpaid" ? false : true;
   return (
     <div>
-      <div className="p-8 border-b">
+      <div className="py-8 border-b">
         <div className="flex justify-between">
-          <h2 className="font-bold text-xl">Chi tiết đơn hàng: #{props.id}</h2>
-          <p className="text-xl">
-            Trạng thái:{" "}
-            <span className={style(props.status)}>{props.status}</span>{" "}
+          <h2 className="font-bold text-3xl">Chi tiết đơn hàng: #{index}</h2>
+          <p className="text-2xl">
+            Trạng thái: <span className={style(order.status)}>{"Đã đặt"}</span>
           </p>
         </div>
-        <p className="text-xl">Mua tại thegioicongnghe.com</p>
+        <p className="text-2xl">Mua tại docongnghe.com</p>
       </div>
-      {orderItems.map((item: any) => {
-        return (
-          <div className="flex justify-between py-4 border-b">
-            <div className="flex">
-              <div className="w-40 h-56">
-                <img className="object-cover" src={item.img} alt={item.title} />
-              </div>
-              <div>
-                <p className="font-semibold text-xl">{item.title}</p>
-                <p className="text-left">Màu: {item.color}</p>
-                <p className="text-left">Số lượng: {item.quantity}</p>
-              </div>
-            </div>
+      <div>
+        <p className="font-medium text-3xl">
+          {purchaseDetail?.purchaseInDb?.product?.name}
+        </p>
 
-            <div>
-              <p className="text-red-400">
-                {numberWithCommas(item.price * (1 - item.discount))}
-              </p>
-              <p className="line-through">{numberWithCommas(item.price)}₫</p>
+        <p className="font-medium text-xl">
+          Số lượng: {purchaseDetail?.purchaseInDb?.product?.quantity}
+        </p>
+      </div>
+      <div className="font-medium text-3xl">
+        <p className="line-through">
+          {numberWithCommas(
+            purchaseDetail?.purchaseInDb?.product?.price_before_discount,
+          )}
+          ₫
+        </p>
+        <p className="text-red-400">
+          {numberWithCommas(purchaseDetail?.purchaseInDb?.product?.price)}đ
+        </p>
+      </div>
+      {purchaseDetail?.images?.map((item: any, index: number) => {
+        return (
+          <div className="flex justify-between py-4 border-b" key={index}>
+            <div className="flex space-x-5">
+              <div className="w-28 h-20">
+                <img className="object-contain" src={item} alt={item} />
+              </div>
             </div>
           </div>
         );
       })}
-      <div className="text-left border-b p-4 text-2xl leading-[40px]">
-        <p>Giá tạm tính: {numberWithCommas(props.totalPrice)}₫</p>
+      <div className="border-b p-4 text-2xl leading-[40px]">
+        <p>Giá tạm tính: {numberWithCommas(order?.price_before_discount)}₫</p>
         <p>
-          <span className="">Phụ phí: </span>{" "}
-          <span>+{numberWithCommas(surcharge)}₫</span>
+          <span className="">Phí giao hàng: </span>{" "}
+          <span>{numberWithCommas(0)}₫</span>
+        </p>
+        <p>
+          <span className="">Giảm giá: </span>{" "}
+          <span>{numberWithCommas(order?.price)}₫</span>
         </p>
         <p>
           <span className="font-bold">Tổng tiền: </span>
           <span className="text-red-500">
-            {numberWithCommas(amountPaid + surcharge)}₫
+            {numberWithCommas(order?.price)}₫
           </span>
         </p>
         <p>
+          <CheckCircleFill className="text-blue-500" />
           <span className="font-bold"> Số tiền đã thanh toán: </span>
-
-          <span className="text-red-400">
-            <CheckCircleFill className="text-blue-500 text-xl" />{" "}
-            {numberWithCommas(amountPaid + surcharge)}₫
-          </span>
+          {/* {checkPayment && (
+            <span className="text-red-400">
+              {numberWithCommas(order?.price)}₫
+            </span>
+          )} */}
+          {checkPayment === true && (
+            <>
+              <span className="text-red-400">Chưa thanh toán</span>{" "}
+            </>
+          )}
         </p>
       </div>
-      <div className=" text-left border-b p-4 text-2xl leading-[40px]">
+      <div className="border-b p-4 text-2xl leading-[40px]">
         <p className="font-bold text-2xl">
           Địa chỉ và thông tin người nhận hàng
         </p>
         <ul>
+          <li>Tên người nhận {userDetail?.name}</li>
+          <li>Email người nhận {userDetail?.email}</li>
           <li>
-            {customer.sex} {customer.username} - {customer.phone}
+            {userDetail?.address} - {userDetail?.phone}
           </li>
-          <li>
-            Địa chỉ nhận hàng {customer.address.ward}{" "}
-            {customer.address.district} {customer.address.city}
-          </li>
-          <li>Thời gian nhận hàng: {deliveryTime}</li>
         </ul>
       </div>
+
       <div className="flex justify-center py-4">
-        <button
-          className="bg-blue-400 rounded-xl p-4"
+        <Button
+          type="link"
           onClick={() =>
-            props.setOrderDetail((current: any) => {
-              return current.index === props.index
+            setOrderDetail((current: any) => {
+              return current.index === index
                 ? {
                     index: -1,
-                    id: props.id,
+                    id: order.id,
                   }
                 : {
-                    index: props.index,
-                    id: props.id,
+                    index: index,
+                    id: order.id,
                   };
             })
           }
         >
           Ẩn xem chi tiết
-        </button>
+        </Button>
       </div>
     </div>
   );
-}
+};
 
 export default OrderDetail;
+

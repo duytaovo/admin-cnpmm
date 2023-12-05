@@ -93,7 +93,7 @@ const TableProduct: React.FC = () => {
       image: product.products[i].image,
       sold: product.products[i].sold,
       view: product.products[i].view,
-      createdAt: product.products[i].createdAt,
+      createdAt: product.products[i].createdAt.substring(0, 10),
       updatedAt: product.products[i].updatedAt,
     });
   }

@@ -1,5 +1,5 @@
 import React from "react";
-import ListPurchase from "./ListProduct";
+import ListPurchase from "./ListPurchase";
 
 type Props = {};
 

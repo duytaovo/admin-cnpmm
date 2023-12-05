@@ -95,16 +95,18 @@ export const schemaAddUser = yup.object({
   gioitinh: yup.string(),
   email: yup.string().required("Email là bắt buộc"),
   password: yup.string().required("Password là bắt buộc"),
+  confirmPassword: yup.string().required("Password là bắt buộc"),
   phone: yup
     .string()
     .required("Số điện thoại là bắt buộc")
     .min(10, "Độ dài từ 10 chữ số")
     .matches(
       /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
-      "Số điện thoại không đúng định dạng"
+      "Số điện thoại không đúng định dạng",
     ),
   name: yup.string().required("Họ Tên là bắt buộc"),
   address: yup.string().required("Địa chỉ là bắt buộc"),
+  role: yup.string(),
   image: yup.string(),
 });
 
@@ -128,3 +130,4 @@ export const schemaCategory = yup.object({
 export type UserSchema = yup.InferType<typeof userSchema>;
 
 export type Schema = yup.InferType<typeof schema>;
+
