@@ -72,14 +72,11 @@ const FormDisabledDemo: React.FC = () => {
       if (file) {
         const form = new FormData();
         form.append("image", file[0]);
-
         const res = await dispatch(uploadAvatar(form));
         unwrapResult(res);
-
         const d = res?.payload?.data;
         images = d.data;
       }
-      console.log(images);
       const body = JSON.stringify({
         email: data.email,
         address: data.address,
@@ -179,7 +176,7 @@ const FormDisabledDemo: React.FC = () => {
           <Input
             name="confirmPassword"
             register={register}
-            type="confirmPassword"
+            type="password"
             className=""
             errorMessage={errors.confirmPassword?.message}
           />

@@ -108,7 +108,6 @@ const FormDisabledDemo: React.FC = () => {
   const onSubmit = handleSubmit(async (data) => {
     let images = [];
     let image;
-    console.log(image);
     try {
       if (_file) {
         const form = new FormData();
@@ -127,7 +126,6 @@ const FormDisabledDemo: React.FC = () => {
         }
         const res = await dispatch(uploadImagesProduct(form));
         unwrapResult(res);
-
         const d = res?.payload?.data;
         images = d.data;
       } else {

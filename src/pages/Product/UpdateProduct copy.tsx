@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { Button, Form, Upload } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,7 +12,7 @@ import { ErrorResponse } from "src/types/utils.type";
 import { schemaProduct } from "src/utils/rules";
 import { getAvatarUrl, isAxiosUnprocessableEntityError } from "src/utils/utils";
 import SelectCustom from "src/components/Select";
-
+import _InputFile from "./_InputFile";
 import Textarea from "src/components/Textarea";
 import InputFile from "src/components/InputFile";
 import {
@@ -20,6 +20,7 @@ import {
   getDetailProduct,
   getProducts,
   updateProduct,
+  uploadImageProduct,
   uploadImagesProduct,
 } from "src/store/product/productSlice";
 import { getCategorys } from "src/store/category/categorySlice";
@@ -30,7 +31,6 @@ const normFile = (e: any) => {
   }
   return e?.fileList;
 };
-
 interface FormData {
   images: string[];
   price: number;
@@ -79,7 +79,11 @@ const FormDisabledDemo: React.FC = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState<File[]>();
   const imageArray = file || []; // Mảng chứa các đối tượng ảnh (File hoặc Blob)
+  const [_file, _setFile] = useState<File>();
 
+  const previewImage = useMemo(() => {
+    return _file ? URL.createObjectURL(_file) : "";
+  }, [_file]);
   // Tạo một mảng chứa các URL tạm thời cho ảnh
   const imageUrls: string[] = [] || [image];
 
@@ -87,6 +91,7 @@ const FormDisabledDemo: React.FC = () => {
     const imageUrl = URL.createObjectURL(image);
     imageUrls.push(imageUrl);
   }
+  const avatar = watch("image");
 
   useEffect(() => {
     dispatch(getCategorys(""));
@@ -108,7 +113,17 @@ const FormDisabledDemo: React.FC = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     let images = [];
+    let image;
     try {
+      if (_file) {
+        const form = new FormData();
+        form.append("image", _file);
+        const res = await dispatch(uploadImageProduct(form));
+        unwrapResult(res);
+        const d = res?.payload?.data;
+        image = d.data;
+      }
+
       if (file) {
         const form = new FormData();
         form.append("file", file[0]);
@@ -135,7 +150,7 @@ const FormDisabledDemo: React.FC = () => {
         name: data.name,
         description: data.description,
         category: data.category,
-        image: images[0],
+        image: image,
       });
       setIsSubmitting(true);
       const res = await dispatch(updateProduct({ _id, body }));
@@ -172,6 +187,9 @@ const FormDisabledDemo: React.FC = () => {
   };
   const handleChangeFile = (file?: File[]) => {
     setFile(file);
+  };
+  const _handleChangeFile = (file?: File) => {
+    _setFile(file);
   };
   return (
     <div className="bg-white shadow ">
@@ -269,9 +287,31 @@ const FormDisabledDemo: React.FC = () => {
           />
         </Form.Item>
         <Form.Item
+          name="_file"
+          label="Hình ảnh đại diện"
+          valuePropName="_fileList"
+          getValueFromEvent={normFile}
+        >
+          <div className="flex  md:w-72 md:border-l md:border-l-gray-200">
+            <div className="flex flex-col items-start">
+              <div className="my-5 w-24 justify-between items-center">
+                <img
+                  src={previewImage || getAvatarUrl(avatar)}
+                  alt=""
+                  className="h-full w-full rounded-full object-cover"
+                />
+              </div>
+              <_InputFile onChange={_handleChangeFile} />
+              <div className="mt-3 text-gray-400">
+                <div>Dụng lượng file tối đa 1 MB</div>
+                <div>Định dạng:.JPEG, .PNG</div>
+              </div>
+            </div>
+          </div>
+        </Form.Item>
+        <Form.Item
           name="file"
-          rules={[{ required: true }]}
-          label="Hình ảnh"
+          label="Hình ảnh chi tiết"
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
