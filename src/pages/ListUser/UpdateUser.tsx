@@ -79,6 +79,7 @@ const FormDisabledDemo: React.FC = () => {
   }, [userDetail]);
 
   const onSubmit = handleSubmit(async (data) => {
+    console.log(data);
     let images = [];
 
     try {
@@ -93,7 +94,7 @@ const FormDisabledDemo: React.FC = () => {
       const body = JSON.stringify({
         email: data.email,
         address: data.address,
-        password: data.password,
+        // password: data.password,
         name: data.name,
         phone: data.phone,
         roles: data.role,

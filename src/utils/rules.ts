@@ -94,8 +94,8 @@ export const userSchema = yup.object({
 export const schemaAddUser = yup.object({
   gioitinh: yup.string(),
   email: yup.string().required("Email là bắt buộc"),
-  password: yup.string().required("Password là bắt buộc"),
-  confirmPassword: yup.string().required("Password là bắt buộc"),
+  password: yup.string(),
+  confirmPassword: yup.string(),
   phone: yup
     .string()
     .required("Số điện thoại là bắt buộc")

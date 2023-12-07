@@ -9,11 +9,7 @@ import { Button, Space, Table, Typography } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import {
-  deletePurchase,
-  getPurchase,
-  updatePurchase,
-} from "src/store/purchases/productSlice";
+import { deletePurchase, getPurchase } from "src/store/purchases/productSlice";
 
 const TablePurchase: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -44,12 +40,12 @@ const TablePurchase: React.FC = () => {
       render: (params) => {
         const { key, _id } = params;
         const handleUpdate = async () => {
-          const res = await dispatch(updatePurchase(_id));
-          unwrapResult(res);
-          const d = res?.payload;
-          if (d?.status !== 200) return toast.error(d?.message);
-          await toast.success("Cập nhật đơn thành công ");
-          await dispatch(getPurchase(""));
+          // const res = await dispatch(updatePurchase(_id));
+          // unwrapResult(res);
+          // const d = res?.payload;
+          // if (d?.status !== 200) return toast.error(d?.message);
+          // await toast.success("Cập nhật đơn thành công ");
+          // await dispatch(getPurchase(""));
         };
 
         const handleDelete = async () => {

@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import TableUser from "./Tables";
 
 const ListUser = () => {
@@ -11,3 +9,4 @@ const ListUser = () => {
 };
 
 export default ListUser;
+

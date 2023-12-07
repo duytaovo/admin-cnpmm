@@ -26,6 +26,7 @@ interface DataType {
   email: string;
   address: string;
   phone: string;
+  roles: string;
   status?: any;
   action?: any;
   avatar?: any;
@@ -41,6 +42,7 @@ const TableUser: React.FC = () => {
     { title: "Email", dataIndex: "email", key: "email" },
     { title: "Địa chỉ", dataIndex: "address", key: "address" },
     { title: "Điện thoại", dataIndex: "phone", key: "phone" },
+    { title: "Vai trò", dataIndex: "roles", key: "roles" },
     // {
     //   title: "Trạng thái",
     //   dataIndex: "status",
@@ -116,6 +118,7 @@ const TableUser: React.FC = () => {
       name: user[i].name,
       address: user[i].address,
       phone: user[i].phone,
+      roles: user[i].roles[0] === "1" ? "Admin" : "User",
       user_id: user[i]._id,
     });
   }
