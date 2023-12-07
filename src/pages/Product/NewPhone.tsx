@@ -284,7 +284,7 @@ const FormDisabledDemo: React.FC = () => {
         </Form.Item>
         <Form.Item
           name="_file"
-          label="Hình ảnh"
+          label="Hình ảnh đại diện"
           valuePropName="_fileList"
           getValueFromEvent={normFile}
         >
@@ -307,7 +307,7 @@ const FormDisabledDemo: React.FC = () => {
         </Form.Item>
         <Form.Item
           name="file"
-          label="Hình ảnh"
+          label="Hình ảnh chi tiết"
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
