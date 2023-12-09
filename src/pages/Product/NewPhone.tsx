@@ -34,7 +34,7 @@ const normFile = (e: any) => {
 interface FormData {
   images: string[];
   price: number;
-  // rating: number;
+  rating: number;
   price_before_discount: number;
   quantity: number;
   sold: number;
@@ -135,7 +135,7 @@ const FormDisabledDemo: React.FC = () => {
       const body = JSON.stringify({
         images,
         price: data.price,
-        // rating: data.rating
+        rating: data.rating,
         price_before_discount: data.price_before_discount,
         quantity: data.quantity,
         // sold: data.sold,
@@ -230,7 +230,11 @@ const FormDisabledDemo: React.FC = () => {
             errorMessage={errors.name?.message}
           />
         </Form.Item>
-        <Form.Item label="Giá gốc" name="price_before_discount">
+        <Form.Item
+          label="Giá gốc"
+          name="price_before_discount"
+          rules={[{ required: true }]}
+        >
           <Input
             name="price_before_discount"
             register={register}
@@ -264,6 +268,15 @@ const FormDisabledDemo: React.FC = () => {
             type="text"
             className=""
             errorMessage={errors.quantity?.message}
+          />
+        </Form.Item>
+        <Form.Item label="Đánh giá" name="rating" rules={[{ required: true }]}>
+          <Input
+            name="rating"
+            register={register}
+            type="text"
+            className=""
+            errorMessage={errors.rating?.message}
           />
         </Form.Item>
         <Form.Item

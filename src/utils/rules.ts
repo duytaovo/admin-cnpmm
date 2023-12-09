@@ -113,7 +113,7 @@ export const schemaAddUser = yup.object({
 export const schemaProduct = yup.object({
   name: yup.string().required("Tên sản phẩm là bắt buộc"),
   price: yup.string().required("Giá sản phẩm là bắt buộc"),
-  // rating: yup.string().required("Đánh giá sản phẩm là bắt buộc"),
+  rating: yup.string().required("Đánh giá sản phẩm là bắt buộc"),
   price_before_discount: yup.string(),
   quantity: yup.string().required("Số lượng sản phẩm là bắt buộc"),
   sold: yup.string(),
