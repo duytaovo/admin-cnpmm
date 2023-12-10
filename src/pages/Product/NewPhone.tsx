@@ -138,7 +138,7 @@ const FormDisabledDemo: React.FC = () => {
         rating: data.rating,
         price_before_discount: data.price_before_discount,
         quantity: data.quantity,
-        // sold: data.sold,
+        sold: data.sold,
         // view: data.view,
         name: data.name,
         description: data.description,
@@ -268,6 +268,15 @@ const FormDisabledDemo: React.FC = () => {
             type="text"
             className=""
             errorMessage={errors.quantity?.message}
+          />
+        </Form.Item>
+        <Form.Item label="Đã bán" name="sold" rules={[{ required: true }]}>
+          <Input
+            name="sold"
+            register={register}
+            type="text"
+            className=""
+            errorMessage={errors.sold?.message}
           />
         </Form.Item>
         <Form.Item label="Đánh giá" name="rating" rules={[{ required: true }]}>
