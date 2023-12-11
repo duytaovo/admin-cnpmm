@@ -22,7 +22,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <HelmetProvider>
           <ErrorBoundary>{routeElements}</ErrorBoundary>
-          <ToastContainer />
+          <ToastContainer />/
         </HelmetProvider>
       </ThemeProvider>
     </div>
